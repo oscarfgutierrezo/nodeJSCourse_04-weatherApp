@@ -1,3 +1,4 @@
+// Importaciones locales
 import { mainMenu, pause, readInput } from "./helpers/inquirer.js"
 import { Search } from "./models/search.js";
 
@@ -18,7 +19,8 @@ const app = async() => {
         switch (option) {
             case 1:
                 // Mostrar mensaje y capturar input del usuario
-                const place = await readInput('Write the place you want to search for:')
+                const place = await readInput('Write the place you want to search for:');
+                await search.searchPlace(place)
                 // Buscar los lugares vinculados a la búsqueda del usuario
 
                 // Permitir al usuario seleccionar uno de los lugares
