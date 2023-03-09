@@ -1,0 +1,16 @@
+{
+  "name": "nodejscourse_04-weatherapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "color": "^4.2.3",
+    "inquirer": "^9.1.4"
+  }
+}
