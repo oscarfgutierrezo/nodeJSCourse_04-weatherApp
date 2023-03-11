@@ -9,6 +9,8 @@ import { Search } from "./models/search.js";
 // Configuración dotenv
 dotenv.config();
 
+console.clear()
+
 const app = async() => {
     let option;
 
@@ -25,21 +27,27 @@ const app = async() => {
             case 1:
                 // Mostrar mensaje y capturar input del usuario
                 const userQuery = await readInput('Write the place you want to search for:');
+
                 // Buscar los lugares vinculados a la búsqueda del usuario
                 const places = await search.searchPlace(userQuery);
+
                 // Permitir al usuario seleccionar uno de los lugares
                 const id = await placesList(places);
+                const { name, latitude, longitude } = places.find( place => place.id === id );
+
                 // Consultar el clima del lugar seleccionado
+                //const { description, averageTemp, minTemp, maxTemp } = await search.checkWeather( latitude, longitude );
+                const { description, averageTemp, minTemp, maxTemp } = await search.checkWeather( latitude, longitude );
 
                 // Mostrar los resultados
-                const { name, latitude, longitude } = places.find( place => place.id === id )
-                console.log(`\n${name}\n`.green);
+                console.log(`\nLocation: ${name.green}`);
                 console.log(`Latitude: ${latitude}`);
                 console.log(`Longitude: ${longitude}`);
-                console.log('Average Tempeture:');
-                console.log('Minimum Tempeture:');
-                console.log('Maximim Tempeture:');
-
+                console.log(`Average Tempeture: ${averageTemp} °C`);
+                console.log(`Minimum Tempeture: ${minTemp} °C`);
+                console.log(`Maximim Tempeture: ${maxTemp} °C`);
+                console.log(`Weather description: ${description.green}`);
+                
                 break;
             case 2:
                 console.log('Record');
