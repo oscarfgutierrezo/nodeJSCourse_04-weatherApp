@@ -20,8 +20,8 @@ const app = async() => {
             case 1:
                 // Mostrar mensaje y capturar input del usuario
                 const place = await readInput('Write the place you want to search for:');
-                await search.searchPlace(place)
                 // Buscar los lugares vinculados a la búsqueda del usuario
+                await search.searchPlace(place)
 
                 // Permitir al usuario seleccionar uno de los lugares
 
