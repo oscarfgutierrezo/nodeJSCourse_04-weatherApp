@@ -25,8 +25,14 @@ export class Search {
             })
 
             // Petición http
-            const resp = await instance.get();
-            console.log(resp.data);
+            const { data } = await instance.get();
+            const placesInfo = data.features.map( place => ({
+                id: place.id,
+                name: place.place_name,
+                longitude: place.center[0],
+                latitude: place.center[1]
+            }));
+            return placesInfo;
         } catch (error) {
             console.log(error);
             return [];   

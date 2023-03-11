@@ -78,14 +78,14 @@ export const readInput = async( message ) => {
 }
 
 // Listado de tareas para eliminar
-export const tasksListRemove = async( tasks = [] ) => {
+export const placesList = async( places = [] ) => {
     // Construir las opciones para el inquirer
-    const choices = tasks.map( (task, i) => {
-        const { id, description } = task
+    const choices = places.map( (place, i) => {
+        const { id, name } = place
         const index = `${i + 1}.`.green
         return {
             value: id,
-            name: `${index} ${description}`
+            name: `${index} ${name}`
         }
     });
     
@@ -99,7 +99,7 @@ export const tasksListRemove = async( tasks = [] ) => {
         {
             type: 'list',
             name: 'id',
-            message: 'Delete',
+            message: 'Choose a place',
             choices
         }
     ];
