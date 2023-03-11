@@ -1,8 +1,13 @@
+// Importaciones de terceros
+import * as dotenv from 'dotenv'
+
 // Importaciones locales
 import { mainMenu, pause, readInput } from "./helpers/inquirer.js"
 import { Search } from "./models/search.js";
 
-console.clear();
+
+// Configuración dotenv
+dotenv.config();
 
 const app = async() => {
     let option;
