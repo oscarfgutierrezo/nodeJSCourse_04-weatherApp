@@ -98,6 +98,9 @@ export class Search {
         // Prevenir registros duplicados
         if( this.searchHistory.includes( place.toLocaleLowerCase() ) ) return;
 
+        // Limitar a 4 la cantidad de registros en historial
+        this.searchHistory = this.searchHistory.splice(0, 4)
+
         // Agregar registro en el array del historial
         this.searchHistory.unshift( place.toLocaleLowerCase() );
 
