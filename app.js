@@ -33,10 +33,13 @@ const app = async() => {
 
                 // Permitir al usuario seleccionar uno de los lugares
                 const id = await placesList(places);
+                if ( id === '0' ) continue;
                 const { name, latitude, longitude } = places.find( place => place.id === id );
 
+                // Almacenar búsqueda en historial
+                search.addSearchHistory( name );
+
                 // Consultar el clima del lugar seleccionado
-                //const { description, averageTemp, minTemp, maxTemp } = await search.checkWeather( latitude, longitude );
                 const { description, averageTemp, minTemp, maxTemp } = await search.checkWeather( latitude, longitude );
 
                 // Mostrar los resultados
@@ -50,7 +53,10 @@ const app = async() => {
                 
                 break;
             case 2:
-                console.log('Record');
+                search.searchHistory.forEach( (place, i) => {
+                    const index = `${ i + 1 }.`.green;
+                    console.log( `${index} ${place}` );
+                })
                 break;
         }
 

@@ -16,7 +16,7 @@ const questions = [
             },
             {
                 value: 2,
-                name: `${ '2.'.green } Record`
+                name: `${ '2.'.green } Search History`
             },
             {
                 value: 0,
