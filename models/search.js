@@ -3,6 +3,7 @@ import fs from 'fs';
 
 // Importaciones de terceros
 import axios from 'axios';
+import { capitalize } from '../helpers/capitalize.js';
 
 export class Search {
     // Historial de consultas
@@ -24,6 +25,15 @@ export class Search {
             'types': ['country', 'place']
         }
     };
+
+    // Historial de consultas capitalizado
+    get searchHistoryCapitalized() {
+        return this.searchHistory.map( place => {
+            let placeArray = place.split(' ');
+            placeArray = placeArray.map( word => capitalize(word) );
+            return placeArray.join(' ');
+        })
+    }
 
     // Configuración de la petición a openWeather
     get openWeatherParams() {
