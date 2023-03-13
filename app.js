@@ -1,13 +1,10 @@
 // Importaciones de terceros
 import * as dotenv from 'dotenv'
-import { capitalize } from './helpers/capitalize.js';
 
 // Importaciones locales
 import { mainMenu, pause, placesList, readInput } from "./helpers/inquirer.js"
 import { Search } from "./models/search.js";
-
-
-
+import { displayResults } from './helpers/displayResults.js';
 
 const app = async() => {
     // Configuración dotenv
@@ -40,31 +37,38 @@ const app = async() => {
                 // Permitir al usuario seleccionar uno de los lugares
                 const id = await placesList(places);
                 if ( id === '0' ) continue;
-                const { name, latitude, longitude } = places.find( place => place.id === id );
+
+                // Info del lugar seleccionado
+                const placeSelected = places.find( place => place.id === id );
+                const { latitude, longitude } = placeSelected;
 
                 // Almacenar búsqueda en historial
-                search.addSearchHistory( name );
+                search.addHistory( placeSelected );
 
                 // Consultar el clima del lugar seleccionado
-                const { description, averageTemp, minTemp, maxTemp } = await search.checkWeather( latitude, longitude );
+                const weatherInfo = await search.checkWeather( latitude, longitude );
 
                 // Mostrar los resultados
-                console.log(`\nLocation: ${name.green}`);
-                console.log(`Latitude: ${latitude}`);
-                console.log(`Longitude: ${longitude}`);
-                console.log(`Average Tempeture: ${averageTemp} °C`);
-                console.log(`Minimum Tempeture: ${minTemp} °C`);
-                console.log(`Maximim Tempeture: ${maxTemp} °C`);
-                console.log(`Weather description: ${capitalize(description).green}`);
+                displayResults( placeSelected, weatherInfo );
                 
                 break;
 
             // Mostrar historial de consultas
             case 2:
-                search.searchHistoryCapitalized.forEach( (place, i) => {
-                    const index = `${ i + 1 }.`.green;
-                    console.log( `${index} ${place}` );
-                })
+                // Permitir al usuario seleccionar uno de los lugares
+                const historyId = await placesList(search.history);
+                if ( historyId === '0' ) continue;
+
+                // Info del lugar seleccionado
+                const hPlaceSelected = search.history.find( place => place.id === historyId );
+                const { latitude: hLatitude  , longitude: hLongitude } = hPlaceSelected;
+                
+                // Consultar el clima del lugar seleccionado
+                const hWeatherInfo = await search.checkWeather( hLatitude, hLongitude );
+
+                // Mostrar los resultados
+                displayResults( hPlaceSelected, hWeatherInfo );
+
                 break;
         }
 

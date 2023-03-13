@@ -7,7 +7,7 @@ import { capitalize } from '../helpers/capitalize.js';
 
 export class Search {
     // Historial de consultas
-    searchHistory = [];
+    history = [];
 
     // Path DB
     dbPath = './db/dataBase.json'
@@ -25,15 +25,6 @@ export class Search {
             'types': ['country', 'place']
         }
     };
-
-    // Historial de consultas capitalizado
-    get searchHistoryCapitalized() {
-        return this.searchHistory.map( place => {
-            let placeArray = place.split(' ');
-            placeArray = placeArray.map( word => capitalize(word) );
-            return placeArray.join(' ');
-        })
-    }
 
     // Configuración de la petición a openWeather
     get openWeatherParams() {
@@ -94,15 +85,16 @@ export class Search {
     }
 
     // Agregar término de búsqueda al historial de consultas
-    addSearchHistory( place = "" ){
+    addHistory( place = {} ){
         // Prevenir registros duplicados
-        if( this.searchHistory.includes( place.toLocaleLowerCase() ) ) return;
+        const existingRecord = this.history.some( record => record?.id === place.id )
+        if (existingRecord) return
 
         // Limitar a 4 la cantidad de registros en historial
-        this.searchHistory = this.searchHistory.splice(0, 4)
+        this.history = this.history.splice(0, 4)
 
         // Agregar registro en el array del historial
-        this.searchHistory.unshift( place.toLocaleLowerCase() );
+        this.history.unshift( place );
 
         // Almacenar en DB
         this.saveDB();
@@ -111,7 +103,7 @@ export class Search {
     // Almacenar historial de consultas en archivo .JSON
     saveDB(){
         const payload = {
-            searchHistory: this.searchHistory
+            history: this.history
         }
 
         fs.writeFileSync( this.dbPath, JSON.stringify(payload) )
@@ -119,9 +111,12 @@ export class Search {
 
     // Leer historial de búsquedas almacenado en archivo .JSON
     loadDB(){
+        // Verificar existencia del archivo .JSON
         if ( !fs.existsSync(this.dbPath) ) return;
+        
+        // Cargar historial
         const info = fs.readFileSync( this.dbPath, { encoding: 'utf-8' });
         const data = JSON.parse(info);
-        this.searchHistory = data.searchHistory;
+        this.history = data.history;
     }
 }

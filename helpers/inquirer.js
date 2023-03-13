@@ -16,7 +16,7 @@ const questions = [
             },
             {
                 value: 2,
-                name: `${ '2.'.green } Search History`
+                name: `${ '2.'.green } History`
             },
             {
                 value: 0,
@@ -104,51 +104,7 @@ export const placesList = async( places = [] ) => {
         }
     ];
     
-    // Retornar el id de la tarea seleccionada por el usuario
+    // Retornar el id del lugar seleccionado por el usuario
     const { id } = await inquirer.prompt(questions);
     return id;
-}
-
-// Mensaje de confirmación
-export const confirmationMessage = async( message ) => {
-    // Configuración del inquirer
-    const question = [
-        {
-            type: 'confirm',
-            name: 'ok',
-            message
-        }
-    ]
-
-    // Retornar opción seleccionadad por el usuario
-    const { ok } = await inquirer.prompt(question);
-    return ok;
-}
-
-// Listado de tareas para marcar como completadas
-export const tasksListToCheck = async( tasks = [] ) => {
-    // Construir las opciones para el inquirer
-    const choices = tasks.map( (task, i) => {
-        const { id, description, finishedDate } = task
-        const index = `${i + 1}.`.green
-        return {
-            value: id,
-            name: `${index} ${description}`,
-            checked: finishedDate ? true : false
-        }
-    });
-
-    // Configuración del inquirer
-    const question = [
-        {
-            type: 'checkbox',
-            name: 'ids',
-            message: 'Check tasks',
-            choices
-        }
-    ];
-    
-    // Retornar el id de la tarea seleccionada por el usuario
-    const { ids } = await inquirer.prompt(question);
-    return ids;
 }
